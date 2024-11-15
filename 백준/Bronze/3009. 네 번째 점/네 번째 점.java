@@ -1,13 +1,20 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) throws IOException {
 
         Scanner sc = new Scanner(System.in);
-        int[] p1 = {sc.nextInt(),sc.nextInt()};
-        int[] p2 = {sc.nextInt(),sc.nextInt()};
-        int[] p3 = {sc.nextInt(),sc.nextInt()};
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        int[] p1 = {Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())};
+        st = new StringTokenizer(br.readLine(), " ");
+        int[] p2 = {Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())};
+        st = new StringTokenizer(br.readLine(), " ");
+        int[] p3 = {Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())};
         int resultX = 0;
         int resultY = 0;
         if(p1[0] == p2[0]){
