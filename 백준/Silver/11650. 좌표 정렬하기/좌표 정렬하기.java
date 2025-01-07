@@ -18,22 +18,13 @@ public class Main {
         Collections.sort(positions, new Comparator<Position>() {
             @Override
             public int compare(Position o1, Position o2) {
-                int res = 0;
-                if(o1.x > o2.x){
-                    res = 1;
-                }
-                else if(o1.x < o2.x){
-                    res = -1;
+
+                if (o1.x == o2.x) {
+                    return o1.y - o2.y;
                 }
                 else{
-                    if(o1.y > o2.y){
-                        res = 1;
-                    }
-                    else if(o1.y < o2.y){
-                        res = -1;
-                    }
+                    return o1.x - o2.x;
                 }
-                return res;
             }
         });
         for (Position position : positions) {
