@@ -27,9 +27,11 @@ public class Main {
                 }
             }
         });
+        StringBuilder sb = new StringBuilder();
         for (Position position : positions) {
-            System.out.println(position.x + " " + position.y);
+            sb.append(position.x).append(" ").append(position.y).append("\n");
         }
+        System.out.println(sb);
     }
 
     public static class Position{
