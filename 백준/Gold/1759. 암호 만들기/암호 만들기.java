@@ -29,10 +29,7 @@ public class Main {
     private static void dfs(int depth, int start){
         if(depth == L){
             if(isValidChar(result)){
-                for (char c : result) {
-                    System.out.print(c);
-                }
-                System.out.println();
+                System.out.println(result);
             }
             return;
         }
