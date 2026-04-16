@@ -3,56 +3,66 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    // 이미 5개의 글자를 무조건 배운다. a n t i c, k가 5보다 작으면 0임
+    static int k;
+    static String[] words;
+    static int answer = 0;
+    static boolean[] used;
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
 
         st = new StringTokenizer(br.readLine());
         int n = Integer.parseInt(st.nextToken());
-        int k = Integer.parseInt(st.nextToken());
-
-        int answer = 0;
-
+        k = Integer.parseInt(st.nextToken());
         if(k < 5){
             System.out.println(0);
             return;
         }
 
-        Set<Character> fixed = Set.of('a', 'n', 't', 'i', 'c');
-        Map<Character, Integer> extra = new HashMap<>();
+        words = new String[n];
 
-        int idx = 0;
-        for(char c = 'a'; c <= 'z'; c++){
-            if(!fixed.contains(c)){
-                extra.put(c, idx);
-                idx++;
-            }
+        for(int i = 0; i < n; i++){
+            words[i] = br.readLine();
         }
 
-        int[] wordMask = new int[n];
-        for(int i = 0; i < n ; i++){
-            String newWord = br.readLine();
-            for(char c : newWord.toCharArray()){
-                if(!fixed.contains(c)){
-                    wordMask[i] |= (1 << extra.get(c));
-                }
-            }
-        }
+        used = new boolean[26];
+        used['a' - 'a'] = true;
+        used['n' - 'a'] = true;
+        used['t' - 'a'] = true;
+        used['i' - 'a'] = true;
+        used['c' - 'a'] = true;
 
-        for(int i = 0; i < (1 << 21); i++){
-            if(Integer.bitCount(i) != (k - 5)) continue;
-
-            int count = 0;
-            for(int wordBit : wordMask){
-                if((i & wordBit) == wordBit){
-                    count++;
-                }
-            }
-            answer = Math.max(answer, count);
-        }
+        dfs(0, 0);
         System.out.println(answer);
-
     }
+
+    private static void dfs(int idx, int count){
+        if(count == (k - 5)){
+            int wordCnt = 0;
+            for(String word : words){
+                char[] charArr = word.toCharArray();
+                boolean flag = true;
+                for(char c : charArr){
+                    if(!used[c - 'a']) {
+                        flag = false;
+                    }
+                }
+                if(flag){
+                    wordCnt++;
+                }
+            }
+            answer = Math.max(answer, wordCnt);
+        }
+
+        for(int i = idx; i < 26; i++){
+            if(used[i]) continue;
+
+            used[i] = true;
+            dfs(i + 1, count + 1);
+            used[i] = false;
+        }
+    }
+
+
 
 }
