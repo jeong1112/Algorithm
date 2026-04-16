@@ -38,20 +38,7 @@ public class Main {
 
     private static void dfs(int idx, int count){
         if(count == (k - 5)){
-            int wordCnt = 0;
-            for(String word : words){
-                char[] charArr = word.toCharArray();
-                boolean flag = true;
-                for(char c : charArr){
-                    if(!used[c - 'a']) {
-                        flag = false;
-                    }
-                }
-                if(flag){
-                    wordCnt++;
-                }
-            }
-            answer = Math.max(answer, wordCnt);
+            countWord();
         }
 
         for(int i = idx; i < 26; i++){
@@ -63,6 +50,23 @@ public class Main {
         }
     }
 
+    private static void countWord() {
+        int wordCnt = 0;
+        for(String word : words){
+            char[] charArr = word.toCharArray();
+            boolean flag = true;
+            for(char c : charArr){
+                if(!used[c - 'a']) {
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag){
+                wordCnt++;
+            }
+        }
+        answer = Math.max(answer, wordCnt);
+    }
 
 
 }
