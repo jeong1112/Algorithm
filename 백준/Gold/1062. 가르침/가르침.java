@@ -1,73 +1,58 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int k;
-    static String[] words;
+    static int k, n, remain;
+    static int[] wordMasks;
     static int answer = 0;
-    static boolean[] used;
+    static final int FIXED; // a, n, t, i, c 고정 비트
+
+    static {
+        int mask = 0;
+        for (char c : new char[]{'a','n','t','i','c'}) {
+            mask |= (1 << (c - 'a'));
+        }
+        FIXED = mask;
+    }
+
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-
-        st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
         k = Integer.parseInt(st.nextToken());
-        if(k < 5){
-            System.out.println(0);
-            return;
+
+        if (k < 5) { System.out.println(0); return; }
+
+        wordMasks = new int[n];
+        for (int i = 0; i < n; i++) {
+            String word = br.readLine();
+            for (char c : word.toCharArray()) {
+                wordMasks[i] |= (1 << (c - 'a'));
+            }
         }
 
-        words = new String[n];
+        remain = k - 5;
+        if (remain >= 21) { System.out.println(n); return; }
 
-        for(int i = 0; i < n; i++){
-            words[i] = br.readLine();
-        }
-
-        used = new boolean[26];
-        used['a' - 'a'] = true;
-        used['n' - 'a'] = true;
-        used['t' - 'a'] = true;
-        used['i' - 'a'] = true;
-        used['c' - 'a'] = true;
-
-        dfs(0, 0);
+        dfs(0, FIXED, 0);
         System.out.println(answer);
     }
 
-    private static void dfs(int idx, int count){
-        if(count == (k - 5)){
-            countWord();
+    static void dfs(int start, int chosen, int count) {
+        if (count == remain) {
+            int wordCnt = 0;
+            for (int wm : wordMasks) {
+                if ((chosen & wm) == wm) wordCnt++;
+            }
+            answer = Math.max(answer, wordCnt);
             return;
         }
 
-        for(int i = idx; i < 26; i++){
-            if(used[i]) continue;
+        if (26 - start < remain - count) return; // 가지치기
 
-            used[i] = true;
-            dfs(i + 1, count + 1);
-            used[i] = false;
+        for (int i = start; i < 26; i++) {
+            if ((FIXED & (1 << i)) != 0) continue; // fixed 글자 skip
+            dfs(i + 1, chosen | (1 << i), count + 1);
         }
     }
-
-    private static void countWord() {
-        int wordCnt = 0;
-        for(String word : words){
-            char[] charArr = word.toCharArray();
-            boolean flag = true;
-            for(char c : charArr){
-                if(!used[c - 'a']) {
-                    flag = false;
-                    break;
-                }
-            }
-            if(flag){
-                wordCnt++;
-            }
-        }
-        answer = Math.max(answer, wordCnt);
-    }
-
-
 }
