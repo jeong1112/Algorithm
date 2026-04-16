@@ -39,6 +39,7 @@ public class Main {
     private static void dfs(int idx, int count){
         if(count == (k - 5)){
             countWord();
+            return;
         }
 
         for(int i = idx; i < 26; i++){
