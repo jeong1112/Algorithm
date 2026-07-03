@@ -48,7 +48,6 @@ class Solution {
             if(visited[curX][curY]) continue;
             visited[curX][curY] = true;
 
-            // 지금 꺼낸놈과 인접해있는 방까지의 최소 시간을 구해놔야 한다.
 
             for(int i = 0; i < 4; i++){
                 int nextX = curX + dx[i];
@@ -56,13 +55,12 @@ class Solution {
 
                 if(nextX < 0 || nextX >= n || nextY < 0 || nextY >= m) continue;
 
-            
                 int nextTime = Math.max(now.time, moveTime[nextX][nextY]) + 1;
-                time[nextX][nextY] = Math.min(time[nextX][nextY], nextTime);
-                pq.offer(new Node(nextX, nextY, nextTime));
-                
+                if(nextTime < time[nextX][nextY]){
+                    time[nextX][nextY] = nextTime;
+                    pq.offer(new Node(nextX, nextY, nextTime));
+                }
             }
-    
         }
 
         return time[n - 1][m - 1];
